@@ -6,7 +6,7 @@ public class Poblacio {
 	private int numContenidors;
 	private int numContenidorsCarrer;
 	private final int INCREMENT;
-	
+
 	public Poblacio(String nom, int components , int increment) {
 		this.nom = nom;
 		this.contenidor = new ContenidorBrossa[components];
@@ -14,8 +14,8 @@ public class Poblacio {
 		this.numContenidors = 0;
 		this.numContenidorsCarrer=0;
 	}
-	
-		public String getNom() {return this.nom;}
+
+	public String getNom() {return this.nom;}
 	public int getNumContenidors() {return this.numContenidors;}
 	public int getNumContenidorsCarrer() {return this.numContenidorsCarrer;}
 
@@ -28,7 +28,8 @@ public class Poblacio {
 		}
 	}
 
-	public void afegirContenidor(ContenidorBrossa p) {
+
+	private void augmentarContenidor () {
 		if (this.numContenidors >= contenidor.length) {
 			ContenidorBrossa[] contenidor2 = new ContenidorBrossa[this.INCREMENT];
 			for (int i =0; i<numContenidors; i++) {
@@ -36,14 +37,24 @@ public class Poblacio {
 			}
 			contenidor2 = contenidor;
 		}
+	}
 
-		int i = 0;
-		for (int j = this.numContenidors ; i<this.numContenidors || i == j ; i++, j--) {
-			if (p.codi.compareTo(codi.this.contenidor[i]) >0 || p.codi.compareTo(codi.this.contenidor[i]) == 0){ // Error que no sabem. necessitem get?
-				this.contenidor [j+1] = this.contenidor[j];
+	public void afegirContenidor(ContenidorBrossa p) {
+		for (int i = this.numContenidors ; i<this.numContenidors ;i++) {
+			if (p.compareTo(this.contenidor[i]) == 0) {
+				return;
+			}
+			if (p.compareTo(this.contenidor[i]) >0){ 
+				augmentarContenidor();
+				this.contenidor
+				this.numContenidors++;
+				if (p.getUbicacio()!=(null)) {
+					this.numContenidorsCarrer++;
+					return;
+				}
 			}
 		}
-		this.contenidor [i] = p;
+		this.contenidor [this.numContenidors] = p;
 		this.numContenidors++;
 		if (p.getUbicacio()!=(null)) {
 			this.numContenidorsCarrer++;
@@ -51,19 +62,36 @@ public class Poblacio {
 	}
 
 	public void afegirContenidor(String codi, int color, String ubicacio, int any, float tara) {
-		ContenidorBrossa p; 
-		p = new ContenidorBrossa(codi,color, ubicacio, any, tara); // Error que no sabem.
-		this.afegirContenidor(p);
+		ContenidorBrossa p;
+		switch (color){
+		case 0:
+			p =  new Plastic (codi, ubicacio, any, tara);
+			afegirContenidor(p);
+		case 1:
+			p =  new Organic (codi, ubicacio, any, tara);
+			afegirContenidor(p);
+		case 2:
+			p =  new Rebuig (codi, ubicacio, any, tara);
+			afegirContenidor(p);
+		case 3:
+			p =  new Paper (codi, ubicacio, any, tara);
+			afegirContenidor(p);
+		case 4:
+			p =  new Vidre (codi, ubicacio, any, tara);
+			afegirContenidor(p);
+		default: 
+			return;
+		} 
 	}
 
 	public void afegirContenidor(ContenidorBrossa[] p) {
 		for (int i =0; i<p.length; i++) {
-			this.afegirContenidor(p[i]); // Assumeixo que l'enunciat es refereix a aquest metode.
+			this.afegirContenidor(codi,color,ubicacio,any,tara); // Assumeixo que l'enunciat es refereix a aquest metode.
 		}
 	}
 
 	public String hiEs(String codi) {
-		int posicio = cercaDicotomica(contenidor, numContenidors, 0, codi);
+		int posicio = cercaDicotomica(contenidor, 0, numContenidors, codi);
 		if (posicio != -1) {
 			return contenidor[posicio].getTipusBrossa(); // S'ha de fer un switch per saber el color o es el tipus brossa.
 		}
@@ -76,10 +104,10 @@ public class Poblacio {
 	public static int cercaDicotomica(ContenidorBrossa[] vector, int esquerra, int dreta, String buscat) { // S'ha de tenir com ha metode complementari?
 		if (dreta >= esquerra) {
 			int mig = esquerra + (dreta - esquerra) / 2;
-			if (codi.vector[mig].equals(buscat)) {	// Igual que l'error d'abans, codi no es visible
+			if (vector[mig].equals(buscat)) {	
 				return mig; 
 			}
-			if (codi.vector[mig].compareTo(buscat) > 0) {
+			if (vector[mig].compareTo(buscat) > 0) {
 				return cercaDicotomica(vector, esquerra, mig - 1, buscat);
 			}
 			return cercaDicotomica(vector, mig + 1, dreta, buscat);
@@ -88,18 +116,20 @@ public class Poblacio {
 	}
 
 	public String numContenidorsPerUbicacio() {
-		int cont=0;
-		String resultat ="";
-		String adresa [] = new String [contenidor.length];
-		int quants [] = new int [contenidor.length];
-		for (int i = 0; i<this.numContenidors; i++) {
-			adresa[i] = contenidor[i].getUbicacio();
+		int on;
+		String [] adresa = new String [this.numContenidors];
+		int []quants = new int [this.numContenidors];
+		for (int k=0; k<this.numContenidors; k++) {
+			quants[k] = 1;
+			adresa[k] = contenidor[k].getUbicacio();
 		}
+		
 		for (int i = 0; i<this.numContenidors; i++) {
-			i=trobar(contenidor[i].getUbicacio(),adresa, quants.length);
-			for (int j = i; j<this.numContenidors; j++) {
-				if (adresa[i].equals(adresa[j])) { 
-					cont++;
+			on = trobar(contenidor[i].getUbicacio(), adresa, this.numContenidors);
+				for (int j = 0; j<this.numContenidors-1; j++) {
+					if (adresa[on].equals(adresa[j])) {
+						quants[i]++;
+						
 				}
 			}
 		}
@@ -112,8 +142,8 @@ public class Poblacio {
 			}
 		}
 		return -1;
-
 	}
+	
 	private static String crear(String[] adresa, int[] quants, int quantes) {
 		String resultat = " ";
 		for (int i=0; i<quantes; i++) {
@@ -124,7 +154,7 @@ public class Poblacio {
 
 	public void eliminarContenidor(ContenidorBrossa c) {
 		int i = 0; 
-		i = cercaDicotomica(contenidor, 0, this.numContenidors, c.codi){
+		i = cercaDicotomica(contenidor, 0, this.numContenidors, c){
 			contenidor[i] = contenidor[i+1];
 			i++;
 		}
@@ -134,12 +164,45 @@ public class Poblacio {
 		int major=0;
 		int quin =0; 
 		for (int i =0; i<this.numContenidors; i++) {
-			if (tipus == contenidor[i].color && contenidor[i].getRecilcat()>major) {
-				quin = i; 
-				major = contenidor[i].getRecilcat();
+			
+			switch (tipus){
+			case 0:
+				if (contenidor[i] instanceof Plastic && major< contenidor[i].getReciclat()) {
 				
+				}
+			case 1:
 				
+			case 2:
+			
+			case 3:
+				
+			case 4:
+				
+			default: 
+				return;
+			} 
+
+
 			}
 		}
+	
+	public String toString() {
+		String resultat = "";
+		for (int i = this.numContenidors; i < 0; i--) {
+			resultat += contenidor[i].toString() + " /n ";
+		}
+		return resultat;
 	}
+	
+	public Poblacio PoblaciomesCarrer(Poblacio c) {
+		if (c.getNumContenidorsCarrer()> this.numContenidorsCarrer) {
+			return c;
+		}
+		else{
+			return this;
+		}
+	}
+	
 }
+
+
