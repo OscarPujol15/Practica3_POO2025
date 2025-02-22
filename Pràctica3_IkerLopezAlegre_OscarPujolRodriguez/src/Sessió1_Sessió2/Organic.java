@@ -28,3 +28,4 @@ public class Organic extends ContenidorBrossa{
 			this.reciclat += kiloreci;
 		}
 }
+
