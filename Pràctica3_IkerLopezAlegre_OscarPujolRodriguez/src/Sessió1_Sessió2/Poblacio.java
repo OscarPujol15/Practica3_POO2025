@@ -44,21 +44,24 @@ public class Poblacio {
 			if (p.compareTo(this.contenidor[i]) == 0) {
 				return;
 			}
-			if (p.compareTo(this.contenidor[i]) >0){ 
+			if (p.compareTo(this.contenidor[i]) >1){ 
 				augmentarContenidor();
-				this.contenidor
+				for (int j = this.numContenidors; j>i; j--) {
+					this.contenidor[j+1] = this.contenidor[j];
+				}
+
 				this.numContenidors++;
 				if (p.getUbicacio()!=(null)) {
 					this.numContenidorsCarrer++;
 					return;
 				}
 			}
-		}
-		this.contenidor [this.numContenidors] = p;
-		this.numContenidors++;
-		if (p.getUbicacio()!=(null)) {
-			this.numContenidorsCarrer++;
-		}
+			this.contenidor [this.numContenidors] = p;
+			this.numContenidors++;
+			if (p.getUbicacio()!=(null)) {
+				this.numContenidorsCarrer++;
+			}
+		} 
 	}
 
 	public void afegirContenidor(String codi, int color, String ubicacio, int any, float tara) {
@@ -86,14 +89,15 @@ public class Poblacio {
 
 	public void afegirContenidor(ContenidorBrossa[] p) {
 		for (int i =0; i<p.length; i++) {
-			this.afegirContenidor(codi,color,ubicacio,any,tara); // Assumeixo que l'enunciat es refereix a aquest metode.
+			afegirContenidor(p[i]);
 		}
+		return;
 	}
 
 	public String hiEs(String codi) {
 		int posicio = cercaDicotomica(contenidor, 0, numContenidors, codi);
 		if (posicio != -1) {
-			return contenidor[posicio].getTipusBrossa(); // S'ha de fer un switch per saber el color o es el tipus brossa.
+			return contenidor[posicio].getTipusBrossa(); 
 		}
 		else {
 			return "No hi és";
@@ -119,20 +123,18 @@ public class Poblacio {
 		int on;
 		String [] adresa = new String [this.numContenidors];
 		int []quants = new int [this.numContenidors];
-		for (int k=0; k<this.numContenidors; k++) {
-			quants[k] = 1;
-			adresa[k] = contenidor[k].getUbicacio();
-		}
-		
+		int cont=0;
 		for (int i = 0; i<this.numContenidors; i++) {
-			on = trobar(contenidor[i].getUbicacio(), adresa, this.numContenidors);
-				for (int j = 0; j<this.numContenidors-1; j++) {
-					if (adresa[on].equals(adresa[j])) {
-						quants[i]++;
-						
-				}
+			on = trobar(contenidor[i].getUbicacio(), adresa, cont);
+			if (on == -1) {
+				adresa[cont] = contenidor[i].getUbicacio();
+				quants[i] = 1;
+			}
+			else {
+				quants[on]++;
 			}
 		}
+		return crear(adresa, quants, cont);
 	}
 
 	private static int trobar(String carrer, String[]adresa, int quants) {
@@ -143,7 +145,7 @@ public class Poblacio {
 		}
 		return -1;
 	}
-	
+
 	private static String crear(String[] adresa, int[] quants, int quantes) {
 		String resultat = " ";
 		for (int i=0; i<quantes; i++) {
@@ -164,28 +166,27 @@ public class Poblacio {
 		int major=0;
 		int quin =0; 
 		for (int i =0; i<this.numContenidors; i++) {
-			
+
 			switch (tipus){
 			case 0:
 				if (contenidor[i] instanceof Plastic && major< contenidor[i].getReciclat()) {
-				
+
 				}
 			case 1:
-				
+
 			case 2:
-			
+
 			case 3:
-				
+
 			case 4:
-				
-			default: 
-				return;
+
+			default:
 			} 
 
 
-			}
 		}
-	
+	}
+
 	public String toString() {
 		String resultat = "";
 		for (int i = this.numContenidors; i < 0; i--) {
@@ -193,7 +194,7 @@ public class Poblacio {
 		}
 		return resultat;
 	}
-	
+
 	public Poblacio PoblaciomesCarrer(Poblacio c) {
 		if (c.getNumContenidorsCarrer()> this.numContenidorsCarrer) {
 			return c;
@@ -202,7 +203,6 @@ public class Poblacio {
 			return this;
 		}
 	}
-	
-}
 
+}
 
