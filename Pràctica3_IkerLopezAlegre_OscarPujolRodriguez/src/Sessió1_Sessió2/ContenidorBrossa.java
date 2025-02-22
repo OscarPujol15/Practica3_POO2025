@@ -2,7 +2,7 @@ package Sessió1_Sessió2;
 
 import java.util.GregorianCalendar;
 
-public abstract class ContenidorBrossa {
+public abstract class ContenidorBrossa implements Comparable{
 	public final static int GROC = 0;
 	public final static int MARRO = 1;
 	public final static int GRIS = 2;
@@ -94,14 +94,28 @@ public abstract class ContenidorBrossa {
 
 	public abstract void buidat (float pes);
 
-	public boolean equals(ContenidorBrossa c){
-		if (this.codi.compareTo(c.codi)>0 || this.codi.compareTo(c.codi)<0){
+	public boolean equals(Object c){
+		if (this.compareTo(c)>0 || this.compareTo(c)<0){
 			return false;
 		}
 		else{
 			return true;
 		}
 	}
+	
+	public int compareTo(Object c){
+		ContenidorBrossa r;
+		if (! (c instanceof ContenidorBrossa)) {
+			return 32;
+		}
+		
+		r = (ContenidorBrossa) c;
+		if (this.codi.compareTo(r.codi)<0) {return -1;}
+		else if (this.codi.compareTo(r.codi)>0) {return 1;}
+		else {return 0;}
+	}
+	
+	
 	public String ToString () {
 		String ubicacions;
 		if (this.ubicacio!=null){
