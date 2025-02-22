@@ -5,7 +5,7 @@ public class Plastic extends ContenidorBrossa {
 	private float reciclat;
 	
 	public Plastic (String codi, String ubicacio, int any, double TARA) {
-		super (codi, ContenidorBrossa.MARRO, ubicacio, any, TARA);
+		super (codi, ContenidorBrossa.GROC, ubicacio, any, TARA);
 		this.reciclat = 0;
 	}
 	
