@@ -5,7 +5,7 @@ public class Paper extends ContenidorBrossa {
 	private float reciclat;
 	
 	public Paper (String codi, String ubicacio, int any, double TARA) {
-		super (codi, ContenidorBrossa.MARRO, ubicacio, any, TARA);
+		super (codi, ContenidorBrossa.BLAU, ubicacio, any, TARA);
 		this.reciclat = 0;
 	}
 	
