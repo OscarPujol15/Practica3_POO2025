@@ -155,36 +155,51 @@ public class Poblacio {
 	}
 
 	public void eliminarContenidor(ContenidorBrossa c) {
-		int i = 0; 
-		i = cercaDicotomica(contenidor, 0, this.numContenidors, c){
-			contenidor[i] = contenidor[i+1];
-			i++;
+		int idx = cercaDicotomica(contenidor, 0, numContenidors-1, c);
+		if(idx == -1) {
+			return;
 		}
+		contenidor[idx] = null;
+		for(int i = idx; i<numContenidors-1; i++) {
+			contenidor[i] = contenidor[i+1];
+		}
+		numContenidors--;
 	}
 
 	public ContenidorBrossa mesRendiment(int tipus) {
-		int major=0;
-		int quin =0; 
+		String major = "";
+		ContenidorBrossa c = null;
 		for (int i =0; i<this.numContenidors; i++) {
-
 			switch (tipus){
 			case 0:
-				if (contenidor[i] instanceof Plastic && major< contenidor[i].getReciclat()) {
-
+				if (contenidor[i] instanceof Plastic && major.compareTo(contenidor[i].getReciclat()) < 0) {
+					major = contenidor[i].getReciclat();
+					c = contenidor[i];
 				}
 			case 1:
-
+				if (contenidor[i] instanceof Organic && major.compareTo(contenidor[i].getReciclat()) < 0) {
+					major = contenidor[i].getReciclat();
+					c = contenidor[i];
+				}
 			case 2:
-
+				if (contenidor[i] instanceof Rebuig && major.compareTo(contenidor[i].getReciclat()) < 0) {
+					major = contenidor[i].getReciclat();
+					c = contenidor[i];
+				}
 			case 3:
-
+				if (contenidor[i] instanceof Paper && major.compareTo(contenidor[i].getReciclat()) < 0) {
+					major = contenidor[i].getReciclat();
+					c = contenidor[i];
+				}
 			case 4:
+				if (contenidor[i] instanceof Vidre && major.compareTo(contenidor[i].getReciclat()) < 0) {
+					major = contenidor[i].getReciclat();
+					c = contenidor[i];
+				}
 
-			default:
 			} 
 
-
-		}
+		}return c;
 	}
 
 	public String toString() {
@@ -203,6 +218,34 @@ public class Poblacio {
 			return this;
 		}
 	}
+	
+	public boolean equals(Poblacio p) {
+		String aquesta = this.numContenidorsPerUbicacio();
+		String parametre = p.numContenidorsPerUbicacio();
+		String[] a = new String[numContenidors];
+		String iguals1 = "";
+		String iguals2 = "";
+		
+		a = aquesta.split("-");
+		String[] pa = new String[numContenidors];
+		pa = aquesta.split("-");
+		
+		Arrays.sort(a);
+		Arrays.sort(pa);
+		
+		for(int i = 0; i<a.length; i++) {
+			iguals1 += a[i];
+			iguals2 += pa[i];
+		}
+		
+		if(iguals1.compareTo(iguals2) == 0) {
+			return true;
+		}
+		
+		return false;
+	}
+	
 
 }
+
 
