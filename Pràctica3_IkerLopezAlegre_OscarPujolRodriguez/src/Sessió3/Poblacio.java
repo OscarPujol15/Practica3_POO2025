@@ -1,4 +1,4 @@
-package Sessió3;
+package Sessio3;
 
 import java.util.Arrays;
 
@@ -221,46 +221,46 @@ public class Poblacio implements Comparable, Pesable {
 			return this;
 		}
 	}
-	
+
 	public boolean equals(Poblacio p) {
 		String aquesta = this.numContenidorsPerUbicacio();
 		String[] a = new String[numContenidors];
 		String iguals1 = "";
 		String iguals2 = "";
-		
+
 		a = aquesta.split("-");
 		String[] pa = new String[numContenidors];
 		pa = aquesta.split("-");
-		
+
 		Arrays.sort(a);
 		Arrays.sort(pa);
-		
+
 		for(int i = 0; i<a.length; i++) {
 			iguals1 += a[i];
 			iguals2 += pa[i];
 		}
-		
+
 		if(iguals1.compareTo(iguals2) == 0) {
 			return true;
 		}
-		
+
 		return false;
 	}
-	
-	
+
+
 	public double getPes (int sistema) throws IllegalArgumentException {
 		String pes1;
-		int conversor;
-		int pes2;
-		
+		int conversor=0;
+		int pes2=0;
+
 		for (int i =0; i<numContenidors;i++) {
-			if (contenidor[i] instanceof Rebuig) {
-				pes1 = ((Rebuig) contenidor[i]).getReciclat().replaceFirst(" tones", "");
+			if (this.contenidor[i] instanceof Rebuig) {
+				pes1 = ((Rebuig) this.contenidor[i]).getReciclat().replaceFirst(" tones", "");
 				conversor += Integer.parseInt(pes1);
 				conversor = conversor*1000;
 				pes2 += conversor;
 			}
-			
+
 			else if (contenidor[i] instanceof Organic) {
 				pes1 = ((Organic) contenidor[i]).getReciclat().replaceFirst(" tones", "");
 				conversor += Integer.parseInt(pes1);
@@ -280,30 +280,67 @@ public class Poblacio implements Comparable, Pesable {
 				conversor = (conversor*200)/1000;
 				pes2 += conversor;
 			}
-			
+
 			else if (contenidor[i] instanceof Paper) {
 				pes1 = ((Paper) contenidor[i]).getReciclat().replaceFirst(" quilograms", "");
 				conversor += Integer.parseInt(pes1);
 				pes2 += conversor;
 			}
-			
+
+		}
+
 			switch (sistema) {
-			
-			
-				case Pesable.SISTEMA_METRIC :
-					return pes2;
-				
-				case Pesable.SISTEMA_ANGLOSEXO :
-					return pes2*0,
-			}
-			}
-			
+
+			case Pesable.SISTEMA_METRIC :
+				return pes2;
+
+			case Pesable.SISTEMA_ANGLOSAXO :
+				return pes2*Pesable.LLIURA;
+
+			default: 
+				throw new IllegalArgumentException();
+		}
+
+	}
+
+	public int compareTo(Object c){
+		Poblacio r;
+		double valor; 
+		if (! (c instanceof Poblacio)) {
+			return 31278;
+		}
+		else {
+			r = (Poblacio) c;
+			valor = this.getPes(10)-r.getPes(10);
+			return (int) valor; 
 		}
 	}
 	
+	private static void Bombolla(Comparable t[]) {
+		Poblacio aux;
+		int n = t.length;
+			for (int i=1; i<=n-1; i++){
+				for ( int j=n-1; j>=i; j--){
+					if (t[j].compareTo(t[j-1])<0) {
+						aux=(Poblacio)t[j];
+						t[j]=t[j-1];
+						t[j-1]=aux;
+					}
+				}
+			}
+	}
 	
+	public static void llistatOrdenatAscendent(Poblacio []p) {
+		for (int i=0; i<p.length;i++) {
+			Bombolla(p);
+			}
+		}
 	
+	private static void Visualitzar (Comparable t[]) {
+		for (int i=0; i<t.length;i++) {
+			System.out.print("Nom de la poblacio: " + (Poblacio) t[i].getNom());
+			System.out.println("Conenidors al carrer: " + (Poblacio) t[i].getNumContenidorsCarrer());
+		}
+		}
+	}
 	
-	public int compareTo(Object c){
-		//invocar getpes//		
-}
