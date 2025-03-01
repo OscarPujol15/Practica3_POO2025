@@ -1,6 +1,13 @@
-package Sessió1_Sessió2;
+package Sesso1_Sessio2;
 
 import java.util.Arrays;
+
+import Sessio3.ContenidorBrossa;
+import Sessio3.Organic;
+import Sessio3.Paper;
+import Sessio3.Plastic;
+import Sessio3.Rebuig;
+import Sessio3.Vidre;
 
 public class Poblacio {
 	private String nom;
@@ -107,7 +114,7 @@ public class Poblacio {
 
 	}
 
-	public static int cercaDicotomica(ContenidorBrossa[] vector, int esquerra, int dreta, String buscat) { // S'ha de tenir com ha metode complementari?
+	public static int cercaDicotomica(ContenidorBrossa[] vector, int esquerra, int dreta, String buscat) { 
 		if (dreta >= esquerra) {
 			int mig = esquerra + (dreta - esquerra) / 2;
 			if (vector[mig].equals(buscat)) {	
@@ -117,6 +124,20 @@ public class Poblacio {
 				return cercaDicotomica(vector, esquerra, mig - 1, buscat);
 			}
 			return cercaDicotomica(vector, mig + 1, dreta, buscat);
+		}
+		return -1;
+	}
+	
+	public static int cercaDicotomica(ContenidorBrossa[] vector, int esquerra, int dreta, ContenidorBrossa c) { 
+		if (dreta >= esquerra) {
+			int mig = esquerra + (dreta - esquerra) / 2;
+			if (vector[mig].equals(c)) {	
+				return mig; 
+			}
+			if (vector[mig].compareTo(c) > 0) {
+				return cercaDicotomica(vector, esquerra, mig - 1, c);
+			}
+			return cercaDicotomica(vector, mig + 1, dreta, c);
 		}
 		return -1;
 	}
@@ -170,34 +191,46 @@ public class Poblacio {
 	}
 
 	public ContenidorBrossa mesRendiment(int tipus) {
-		String major = "";
+		String reci ="";
+		int major = 0;
 		int conversio;
 		ContenidorBrossa c = null;
 		for (int i =0; i<this.numContenidors; i++) {
 			switch (tipus){
 			case 0:
-				if (contenidor[i] instanceof Plastic && major.compareTo(contenidor[i].getReciclat()) < 0) {
-					major = contenidor[i].getReciclat();
+				reci = ((Plastic) contenidor[i]).getReciclat().replaceFirst(" quilograms", "");
+				conversio = Integer.parseInt(reci);
+				if (contenidor[i] instanceof Plastic && major<conversio) {
+					major = conversio;
 					c = contenidor[i];
+					
 				}
 			case 1:
-				if (contenidor[i] instanceof Organic && major.compareTo(contenidor[i].getReciclat()) < 0) {
-					major = contenidor[i].getReciclat();
+				reci = ((Organic) contenidor[i]).getReciclat().replaceFirst(" quilograms", "");
+				conversio = Integer.parseInt(reci);
+				if (contenidor[i] instanceof Organic && major<conversio) {
+					major = conversio;
 					c = contenidor[i];
 				}
 			case 2:
-				if (contenidor[i] instanceof Rebuig && major.compareTo(contenidor[i].getReciclat()) < 0) {
-					major = contenidor[i].getReciclat();
+				reci = ((Rebuig) contenidor[i]).getReciclat().replaceFirst(" quilograms", "");
+				conversio = Integer.parseInt(reci);
+				if (contenidor[i] instanceof Rebuig && major<conversio) {
+					major = conversio;
 					c = contenidor[i];
 				}
 			case 3:
-				if (contenidor[i] instanceof Paper && major.compareTo(contenidor[i].getReciclat()) < 0) {
-					major = contenidor[i].getReciclat();
+				reci = ((Paper) contenidor[i]).getReciclat().replaceFirst(" quilograms", "");
+				conversio = Integer.parseInt(reci);
+				if (contenidor[i] instanceof Paper && major<conversio) {
+					major = conversio;
 					c = contenidor[i];
 				}
 			case 4:
-				if (contenidor[i] instanceof Vidre && major.compareTo(contenidor[i].getReciclat()) < 0) {
-					major = contenidor[i].getReciclat();
+				reci = ((Vidre) contenidor[i]).getReciclat().replaceFirst(" quilograms", "");
+				conversio = Integer.parseInt(reci);
+				if (contenidor[i] instanceof Vidre && major<conversio) {
+					major = conversio;
 					c = contenidor[i];
 				}
 
@@ -247,6 +280,6 @@ public class Poblacio {
 		
 		return false;
 	}
-	
 
 }
+
