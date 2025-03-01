@@ -1,8 +1,8 @@
-package Sessió1_Sessió2;
+package Sessió3;
 
 import java.util.Arrays;
 
-public class Poblacio {
+public class Poblacio implements Comparable, Pesable {
 	private String nom;
 	private ContenidorBrossa contenidor[];
 	private int numContenidors;
@@ -155,7 +155,6 @@ public class Poblacio {
 		}
 		return resultat;
 	}
-	
 
 	public void eliminarContenidor(ContenidorBrossa c) {
 		int idx = cercaDicotomica(contenidor, 0, numContenidors-1, c);
@@ -248,5 +247,63 @@ public class Poblacio {
 		return false;
 	}
 	
+	
+	public double getPes (int sistema) throws IllegalArgumentException {
+		String pes1;
+		int conversor;
+		int pes2;
+		
+		for (int i =0; i<numContenidors;i++) {
+			if (contenidor[i] instanceof Rebuig) {
+				pes1 = ((Rebuig) contenidor[i]).getReciclat().replaceFirst(" tones", "");
+				conversor += Integer.parseInt(pes1);
+				conversor = conversor*1000;
+				pes2 += conversor;
+			}
+			
+			else if (contenidor[i] instanceof Organic) {
+				pes1 = ((Organic) contenidor[i]).getReciclat().replaceFirst(" tones", "");
+				conversor += Integer.parseInt(pes1);
+				conversor = conversor*1000;
+				pes2 += conversor;
+			}
 
+			else if (contenidor[i] instanceof Plastic) {
+				pes1 = ((Plastic) contenidor[i]).getReciclat().replaceFirst(" quilograms", "");
+				conversor += Integer.parseInt(pes1);
+				pes2 += conversor;
+			}
+
+			else if (contenidor[i] instanceof Vidre) {
+				pes1 = ((Vidre) contenidor[i]).getReciclat().replaceFirst(" envasos equivalents", "");
+				conversor += Integer.parseInt(pes1);
+				conversor = (conversor*200)/1000;
+				pes2 += conversor;
+			}
+			
+			else if (contenidor[i] instanceof Paper) {
+				pes1 = ((Paper) contenidor[i]).getReciclat().replaceFirst(" quilograms", "");
+				conversor += Integer.parseInt(pes1);
+				pes2 += conversor;
+			}
+			
+			switch (sistema) {
+			
+			
+				case Pesable.SISTEMA_METRIC :
+					return pes2;
+				
+				case Pesable.SISTEMA_ANGLOSEXO :
+					return pes2*0,
+			}
+			}
+			
+		}
+	}
+	
+	
+	
+	
+	public int compareTo(Object c){
+		//invocar getpes//		
 }

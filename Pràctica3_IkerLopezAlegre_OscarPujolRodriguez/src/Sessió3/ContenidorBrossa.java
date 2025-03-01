@@ -1,8 +1,8 @@
-package Sessió1_Sessió2;
+package Sessió3;
 
 import java.util.GregorianCalendar;
 
-public abstract class ContenidorBrossa implements Comparable {
+public abstract class ContenidorBrossa implements Comparable, Pesable {
 	public final static int GROC = 0;
 	public final static int MARRO = 1;
 	public final static int GRIS = 2;
@@ -34,6 +34,7 @@ public abstract class ContenidorBrossa implements Comparable {
 		int anyActual = avui.get(1);
 		return anyActual;
 	}
+	
 	public String getTipusBrossa(){
 		switch (this.color){
 		case 0:
@@ -102,31 +103,30 @@ public abstract class ContenidorBrossa implements Comparable {
 			return true;
 		}
 	}
-	
+
 	public int compareTo(Object c){
 		ContenidorBrossa r;
 		if (! (c instanceof ContenidorBrossa)) {
 			return 32;
 		}
-		
-		else {
-			r = (ContenidorBrossa) c;
-			if (this.codi.compareTo(r.codi)<0) {return -1;}
-			else if (this.codi.compareTo(r.codi)>0) {return 1;}
-			else {return 0;}
-		}
-		
+		r = (ContenidorBrossa) c;
+		if (this.codi.compareTo(r.codi)<0) {return -1;}
+		else if (this.codi.compareTo(r.codi)>0) {return 1;}
+		else {return 0;}
 	}
-	
-	
-	public String ToString () {
+
+
+	public String toString () {
 		String ubicacions;
 		if (this.ubicacio!=null){
-			ubicacions = this.ubicacio;}
+			ubicacions = this.ubicacio;
+			}
 		else{
-			ubicacions = "retirat";}
-		
+			ubicacions = "retirat";
+			}
+
 		return "Codi: " + this.codi + "Color: " + this.getTipusBrossa() + 
 				"Ubicació:" + ubicacions + "l’Ajuntament Tara:" + Math.round((this.TARA*100)/100);
-	}
+	}	
+
 }

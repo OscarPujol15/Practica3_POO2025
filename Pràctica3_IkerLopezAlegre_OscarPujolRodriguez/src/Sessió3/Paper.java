@@ -1,4 +1,4 @@
-package Sessió1_Sessió2;
+package Sessió3;
 
 public class Paper extends ContenidorBrossa {
 
