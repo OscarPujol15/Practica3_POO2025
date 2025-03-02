@@ -39,7 +39,7 @@ public abstract class ContenidorBrossa implements Comparable{
 		int anyActual = avui.get(1);
 		return anyActual;
 	}
-	
+
 	public String getTipusBrossa()throws IllegalArgumentException{
 		switch (this.color){
 		case 0:
@@ -129,10 +129,10 @@ public abstract class ContenidorBrossa implements Comparable{
 		String ubicacions;
 		if (this.ubicacio!=null){
 			ubicacions = this.ubicacio;
-			}
+		}
 		else{
 			ubicacions = " retirat ";
-			}
+		}
 
 		return "Codi: " + this.codi + " Color: " + this.getTipusBrossa() + 
 				" Ubicació: " + ubicacions + " l’Ajuntament Tara: " + Math.round((this.TARA*100)/100);
