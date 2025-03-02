@@ -2,13 +2,6 @@ package Sesso1_Sessio2;
 
 import java.util.Arrays;
 
-import Sessio3.ContenidorBrossa;
-import Sessio3.Organic;
-import Sessio3.Paper;
-import Sessio3.Plastic;
-import Sessio3.Rebuig;
-import Sessio3.Vidre;
-
 public class Poblacio {
 	private String nom;
 	private ContenidorBrossa contenidor[];
