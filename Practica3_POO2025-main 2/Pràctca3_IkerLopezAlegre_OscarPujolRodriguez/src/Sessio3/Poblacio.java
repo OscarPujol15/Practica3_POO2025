@@ -72,7 +72,7 @@ public class Poblacio implements Comparable, Pesable {
 		} 
 	}
 
-	public void afegirContenidor(String codi, int color, String ubicacio, int any, float tara) {
+	public void afegirContenidor(String codi, int color, String ubicacio, int any, float tara) throws ExceptionContenidorBrossa{
 		if (color!=ContenidorBrossa.GROC && color!=ContenidorBrossa.MARRO && color!=ContenidorBrossa.GRIS &&
 				color!=ContenidorBrossa.BLAU &&color!=ContenidorBrossa.VERD) {throw new IllegalArgumentException("Valor de color Incorrecte");}
 		ContenidorBrossa p;
@@ -93,7 +93,7 @@ public class Poblacio implements Comparable, Pesable {
 			p =  new Vidre (codi, ubicacio, any, tara);
 			afegirContenidor(p);
 		default: 
-			return;
+			throw new ExceptionContenidorBrossa("Aquest contenidor no s'ha pogut afegir");
 		} 
 	}
 
@@ -383,7 +383,7 @@ public class Poblacio implements Comparable, Pesable {
 		visualitzar(p);
 		}
 	
-	public static void visualitzar(Comparable t[]) {
+	private static void visualitzar(Comparable t[]) {
 		for (int i=0; i<t.length;i++) {
 			System.out.print("Nom de la poblacio: " + ((Poblacio) t[i]).getNom());
 			System.out.println("Conenidors al carrer: " + ((Poblacio) t[i]).getNumContenidorsCarrer());
@@ -392,6 +392,7 @@ public class Poblacio implements Comparable, Pesable {
 	
 	public static void llistatOrdenatDescendent(Poblacio[] p) {
 		Arrays.sort(p, Collections.reverseOrder());
+		visualitzar(p);
 	}
 }
 	

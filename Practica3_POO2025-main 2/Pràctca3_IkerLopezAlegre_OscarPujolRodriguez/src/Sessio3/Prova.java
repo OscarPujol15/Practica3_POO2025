@@ -18,9 +18,11 @@ public class Prova {
 			"FF-0006", "GG-0007", "HH-0008", "II-0009", "JJ-0010"
 	};
 	
-	public static void main(String[] args) {
+	public static void main(String[] args){
+
 		main1();
 		mainAleatori();
+    
 	}
 		
 	
@@ -88,42 +90,52 @@ public class Prova {
 		}
 	
 	
-		public static void mainAleatori() {
+		public static void mainAleatori(){
 		    Random random = new Random();
 		    System.out.println("=== PROVES ALEATÒRIES ===\n");
 
-		    // Crear població aleatòria
-		    Poblacio poblacio = new Poblacio(NOMS_POBLACIONS[random.nextInt(NOMS_POBLACIONS.length)], 
-		                                     random.nextInt(900000) + 100000, 10);
+		    Poblacio[] poblacions = new Poblacio[5];
 
-		    // Vector para almacenar los contenedores
-		    ContenidorBrossa[] contenidors = new ContenidorBrossa[5];
+		    for (int i = 0; i < poblacions.length; i++) {
+		        String nomPoblacio = NOMS_POBLACIONS[random.nextInt(NOMS_POBLACIONS.length)];
+		        poblacions[i] = new Poblacio(nomPoblacio, random.nextInt(900000) + 100000, 10);
 
-		    // Afegir contenidors aleatoris
-		    for (int i = 0; i < contenidors.length; i++) {
-		        String codi = CODIS_CONTENIDORS[random.nextInt(CODIS_CONTENIDORS.length)];
-		        String carrer = NOMS_CARRERS[random.nextInt(NOMS_CARRERS.length)];
-		        int capacitat = random.nextInt(150);
-		        int tara = random.nextInt(4500);
+		        for (int j = 0; j < 5; j++) {
+		            String codi = CODIS_CONTENIDORS[random.nextInt(CODIS_CONTENIDORS.length)];
+		            String carrer = NOMS_CARRERS[random.nextInt(NOMS_CARRERS.length)];
+		            int capacitat = random.nextInt(150);
+		            int tara = random.nextInt(4500);
 
-		        try {
-		            switch (random.nextInt(3)) {
-		                case 0:
-		                	ContenidorBrossa c1 = new Vidre("AA-0001", 3505);
-		                case 1:
-		        			ContenidorBrossa c2 = new Paper("BB-0002", 2505);
-		                case 2:
-		        			ContenidorBrossa c3 = new Plastic("CC-0003", "Major", 2024, 1505);		                    break;
+		            try {
+		                ContenidorBrossa contenidor = null;
+
+		                int tipus = random.nextInt(5);
+		                switch (tipus) {
+		                    case 0:
+		                        contenidor = new Vidre(codi, carrer, 2024, tara);
+		                    case 1:
+		                        contenidor = new Paper(codi, carrer, 2024, tara);
+		                    case 2:
+		                        contenidor = new Plastic(codi, carrer, 2024, tara);
+		                    case 3:
+		                        contenidor = new Organic(codi, carrer, 2024, tara);
+		                    case 4:
+		                        contenidor = new Rebuig(codi, carrer, 2024, tara);
+		                }
+
+		                poblacions[i].afegirContenidor(contenidor);
+		            } catch (IllegalArgumentException e) {
+		                System.out.println("Error en crear contenidor: " + e);
 		            }
-		            poblacio.afegirContenidor(contenidors[i]);  // Agregar a la población
-		        } catch (Exception e) {
-		            System.out.println("Error en crear contenidor: " + e.getMessage());
 		        }
 		    }
 
-		    // Mostrar llistats ordenats
 		    System.out.println("\nLLISTATS ORDENATS:");
-		    System.out.println("\nPer Reciclatge:");
-		    Poblacio.visualitzar(contenidors);
+
+		    System.out.println("\nOrdenat per reciclatge (ascendent):");
+		    Poblacio.llistatOrdenatAscendent(poblacions);
+
+		    System.out.println("\nOrdenat per reciclatge (descendent):");
+		    Poblacio.llistatOrdenatDescendent(poblacions);
 		}
 }
